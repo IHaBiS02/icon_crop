@@ -12,25 +12,24 @@
     <style>
         /* Cropper.js 이미지가 부모 컨테이너를 벗어나지 않도록 설정 */
         .crop-container {
-            max-width: 100%; /* 컨테이너 최대 너비 */
-            width: 500px; /* 기본 너비, 필요에 따라 조절 */
+            max-width: 100%;
+            width: 500px;
             margin-bottom: 1rem;
-            border: 1px dashed var(--pico-muted-border-color); /* 크롭 영역 시각적 구분 */
-            min-height: 200px; /* 이미지가 로드되기 전 최소 높이 */
+            border: 1px dashed var(--pico-muted-border-color);
+            min-height: 200px;
         }
         #imageToCrop {
-            display: block; /* 이미지가 inline 요소일 경우 발생할 수 있는 여백 제거 */
-            max-width: 100%; /* 이미지가 컨테이너를 넘지 않도록 함 */
+            display: block;
+            max-width: 100%;
         }
         #croppedPreview {
-            max-width: 300px; /* 크롭된 이미지 미리보기 최대 너비 */
-            max-height: 300px; /* 크롭된 이미지 미리보기 최대 높이 (정사각형이므로) */
+            max-width: 300px;
+            max-height: 300px;
             margin-bottom: 1rem;
             border: 1px solid var(--pico-secondary-border-color);
         }
-        /* 로딩 스피너 (선택 사항) */
         .loading-spinner {
-            display: none; /* 기본 숨김 */
+            display: none;
             border: 4px solid var(--pico-muted-border-color);
             border-top: 4px solid var(--pico-primary);
             border-radius: 50%;
@@ -43,7 +42,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* 다운로드 링크 컨테이너 내부 요소 정렬 */
         #downloadLinksContainer div {
             margin-bottom: 0.5rem;
             display: flex;
@@ -52,6 +50,49 @@
         }
         #downloadLinksContainer div span {
             margin-right: 1rem;
+        }
+
+        /* 사이즈 태그 스타일 */
+        .size-tag-container {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid var(--pico-muted-border-color);
+            border-radius: var(--pico-border-radius);
+            min-height: 40px; /* 태그가 없을 때도 높이 유지 */
+            display: flex; /* 태그들을 가로로 배열 */
+            flex-wrap: wrap; /* 태그가 많으면 다음 줄로 */
+            gap: 0.5rem; /* 태그 사이 간격 */
+        }
+        .size-tag {
+            background-color: var(--pico-primary-background);
+            color: var(--pico-primary-inverse);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--pico-border-radius);
+            font-size: 0.9em;
+            display: inline-flex; /* 내부 아이템 정렬 */
+            align-items: center;
+        }
+        .size-tag button {
+            background: none;
+            border: none;
+            color: var(--pico-primary-inverse);
+            margin-left: 0.5rem;
+            padding: 0;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 1; /* 버튼 높이 조절 */
+        }
+        .size-tag button:hover {
+            color: var(--pico-primary-hover-inverse);
+        }
+        /* 입력 그룹 스타일 */
+        .input-group {
+            display: flex;
+            gap: 0.5rem; /* 입력창과 버튼 사이 간격 */
+            margin-bottom: 1rem;
+        }
+        .input-group input[type="number"] {
+            flex-grow: 1; /* 입력창이 남은 공간을 채우도록 */
         }
     </style>
 </head>
@@ -89,13 +130,19 @@
                     <figcaption>크롭된 이미지</figcaption>
                 </figure>
 
-                <div id="sizeInputGroup">
-                    <label for="widthInput1">원하는 가로 사이즈 (px):</label>
-                    <div class="grid" id="sizeInputContainer">
-                        <input type="number" class="width-input" name="widthInput" placeholder="예: 300">
+                <div>
+                    <label for="widthInput">원하는 가로 사이즈 (px):</label>
+                    <div class="input-group">
+                        <input type="number" id="widthInput" name="widthInput" placeholder="예: 300">
+                        <button id="addSizeButton" class="secondary outline">추가</button>
                     </div>
                 </div>
-                <button id="addSizeInputButton" class="secondary outline">사이즈 입력 필드 추가</button>
+
+                <label>선택된 사이즈 목록:</label>
+                <div id="selectedSizesContainer" class="size-tag-container">
+                    <small><em>추가 버튼을 눌러 사이즈를 등록하세요.</em></small>
+                </div>
+
                 <button id="resizeAndDownloadButton">선택된 사이즈로 리사이즈 및 다운로드</button>
                 <div id="resizeLoadingSpinner" class="loading-spinner"></div>
 
