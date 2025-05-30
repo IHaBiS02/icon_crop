@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 크롭 및 리사이즈 도구</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+
+    <style>
+        /* Cropper.js 이미지가 부모 컨테이너를 벗어나지 않도록 설정 */
+        .crop-container {
+            max-width: 100%; /* 컨테이너 최대 너비 */
+            width: 500px; /* 기본 너비, 필요에 따라 조절 */
+            margin-bottom: 1rem;
+            border: 1px dashed var(--pico-muted-border-color); /* 크롭 영역 시각적 구분 */
+            min-height: 200px; /* 이미지가 로드되기 전 최소 높이 */
+        }
+        #imageToCrop {
+            display: block; /* 이미지가 inline 요소일 경우 발생할 수 있는 여백 제거 */
+            max-width: 100%; /* 이미지가 컨테이너를 넘지 않도록 함 */
+        }
+        #croppedPreview {
+            max-width: 300px; /* 크롭된 이미지 미리보기 최대 너비 */
+            max-height: 300px; /* 크롭된 이미지 미리보기 최대 높이 (정사각형이므로) */
+            margin-bottom: 1rem;
+            border: 1px solid var(--pico-secondary-border-color);
+        }
+        /* 로딩 스피너 (선택 사항) */
+        .loading-spinner {
+            display: none; /* 기본 숨김 */
+            border: 4px solid var(--pico-muted-border-color);
+            border-top: 4px solid var(--pico-primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* 다운로드 링크 컨테이너 내부 요소 정렬 */
+        #downloadLinksContainer div {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #downloadLinksContainer div span {
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>이미지 편집 도구</h1>
+            <p>이미지를 정사각형으로 자르고, 원하는 크기로 리사이즈하세요.</p>
+        </header>
+
+        <section id="crop-view">
+            <article>
+                <header>
+                    <h2>1. 이미지 선택 및 정사각형 크롭</h2>
+                </header>
+                <p>
+                    <label for="imageUpload">이미지 파일 선택:</label>
+                    <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
+                </p>
+                <div class="crop-container">
+                    <img id="imageToCrop" src="#" alt="크롭할 이미지" style="display: none;">
+                </div>
+                <button id="cropConfirmButton" style="display: none;">이 영역으로 크롭하기</button>
+                <div id="cropLoadingSpinner" class="loading-spinner"></div>
+            </article>
+        </section>
+
+        <section id="resize-view" style="display:none;">
+            <article>
+                <header>
+                    <h2>2. 리사이즈 및 다운로드</h2>
+                </header>
+                <figure style="text-align: center;">
+                    <img id="croppedPreview" src="#" alt="크롭된 이미지 미리보기">
+                    <figcaption>크롭된 이미지</figcaption>
+                </figure>
+
+                <div id="sizeInputGroup">
+                    <label for="widthInput1">원하는 가로 사이즈 (px):</label>
+                    <div class="grid" id="sizeInputContainer">
+                        <input type="number" class="width-input" name="widthInput" placeholder="예: 300">
+                    </div>
+                </div>
+                <button id="addSizeInputButton" class="secondary outline">사이즈 입력 필드 추가</button>
+                <button id="resizeAndDownloadButton">선택된 사이즈로 리사이즈 및 다운로드</button>
+                <div id="resizeLoadingSpinner" class="loading-spinner"></div>
+
+                <div id="downloadLinksContainer" style="margin-top: 1.5rem;">
+                    <p><em>리사이즈된 이미지가 준비되면 여기에 표시됩니다.</em></p>
+                </div>
+                 <button id="backToCropButton" class="contrast outline">다른 이미지 크롭하기</button>
+            </article>
+        </section>
+
+        <footer>
+            <small>Powered by Pico.css, Cropper.js, Pica.js</small>
+        </footer>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/9.0.1/pica.min.js"></script>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
