@@ -89,10 +89,16 @@
         .input-group {
             display: flex;
             gap: 0.5rem; /* 입력창과 버튼 사이 간격 */
-            margin-bottom: 1rem;
+            margin-bottom: 1rem; /* 입력 그룹과 다음 요소 사이 간격 */
         }
         .input-group input[type="number"] {
             flex-grow: 1; /* 입력창이 남은 공간을 채우도록 */
+        }
+        /* 버튼 그룹 스타일 */
+        .button-group {
+            display: flex;
+            gap: 0.5rem; /* 버튼 사이 간격 */
+            margin-top: 1rem; /* 위 요소와의 간격 */
         }
     </style>
 </head>
@@ -130,20 +136,21 @@
                     <figcaption>크롭된 이미지</figcaption>
                 </figure>
 
+                <label for="selectedSizesContainerDisplay">선택된 사이즈 목록:</label> <div id="selectedSizesContainer" class="size-tag-container">
+                    <small><em>추가 버튼을 눌러 사이즈를 등록하세요.</em></small>
+                </div>
+
                 <div>
                     <label for="widthInput">원하는 가로 사이즈 (px):</label>
                     <div class="input-group">
                         <input type="number" id="widthInput" name="widthInput" placeholder="예: 300">
-                        <button id="addSizeButton" class="secondary outline">추가</button>
-                    </div>
+                        </div>
                 </div>
 
-                <label>선택된 사이즈 목록:</label>
-                <div id="selectedSizesContainer" class="size-tag-container">
-                    <small><em>추가 버튼을 눌러 사이즈를 등록하세요.</em></small>
+                <div class="button-group">
+                    <button id="addSizeButton" class="secondary outline">추가</button>
+                    <button id="resizeAndDownloadButton">선택된 사이즈로 리사이즈 및 다운로드</button>
                 </div>
-
-                <button id="resizeAndDownloadButton">선택된 사이즈로 리사이즈 및 다운로드</button>
                 <div id="resizeLoadingSpinner" class="loading-spinner"></div>
 
                 <div id="downloadLinksContainer" style="margin-top: 1.5rem;">
@@ -161,6 +168,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/9.0.1/pica.min.js"></script>
 
-    <script src="js/main.js"></script>
-</body>
+    <script src="js/main.js"></script> </body>
 </html>
